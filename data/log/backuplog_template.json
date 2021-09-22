@@ -1,0 +1,18 @@
+{
+    "files": {
+        "srcfolder/subfolder1/file1.ext": {
+            "filename": "file1.ext",
+            "fullpath": "srcfolder/subfolder1",
+            "size": 5,
+            "mtime": "2021-09-22T20:44:22.866Z",
+            "srcrootdir": "srcfolder",
+            "targetrootdir": "targetfolder",
+            "backupstatus": "created"
+        }
+    },
+    "subdirs": {
+        "srcfolder": {
+            "mtime": "2021-09-22T16:06:31.837Z"
+        }
+    }
+}
