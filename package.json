@@ -1,0 +1,22 @@
+{
+  "name": "js_backup_localfiles",
+  "version": "1.0.0",
+  "description": "Back up files from the source folders to the target folders.",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShenzhenYAO/js_backup_localfiles.git"
+  },
+  "author": "Shenzhen Yao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShenzhenYAO/js_backup_localfiles/issues"
+  },
+  "homepage": "https://github.com/ShenzhenYAO/js_backup_localfiles#readme",
+  "dependencies": {
+    "beautify": "0.0.8"
+  }
+}
