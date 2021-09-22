@@ -9,14 +9,19 @@ const beautify = require('beautify');
 (async () => {
 
     // back up files from multiple src directories to multiple target directories
+    let backuplog_json = { files: {}, subdirs: {} }
 
     // read the src and target directories from the config file
     let configstr = fs.readFileSync(configfile)
     let config_json = JSON.parse(configstr)
-    for (let i=0; i < .length; i++)
+    for (let i = 0; i < config_json.length; i++) {
+        let thetask = config_json[i]
+        // console.log(thetask)
 
-    let backuplog_json = await backup_a_src_dir(rootdir_src, rootdir_target)
-    
+        let thetasklog_json = await backup_a_src_dir(thetask.src, thetask.target)
+        backuplog_json.files = { ...backuplog_json.files, ...thetasklog_json.files }
+        backuplog_json.subdirs = { ...backuplog_json.subdirs, ...thetasklog_json.subdirs }
+    } //for (let i=0; i < config_json.length; i++)
 
     // write the updated src_dict as the backuplog
     let thetxtjson = JSON.stringify(backuplog_json)
@@ -24,8 +29,6 @@ const beautify = require('beautify');
     let thetxtjson_beautified = beautify(thetxtjson, { format: 'json' })
     // do not use the saveJSON function as that one saves a JSON (not jsonstr) to a .json file
     await fs.writeFileSync(backuplogfile, thetxtjson_beautified)
-
-     
 
 })()
 
@@ -108,7 +111,7 @@ async function backup_a_src_dir(rootdir_src, rootdir_target) {
 
     return src_dict
 
-} // async function backup_a_src_dir(rootdir_src,rootdir_target )
+}; // async function backup_a_src_dir(rootdir_src,rootdir_target )
 
 //in ms windows, it is not allowed to create C:/Users/Z70/Desktop/target1/sub_1
 // while its parent folder C:/Users/Z70/Desktop/target1 does not exist
@@ -129,32 +132,35 @@ async function make_dir(thedir) {
 // recursively get the files and subdirs within a given rootdir, save the size and last modified info
 async function get_files_subdirs(thedir) {
     let result_dict = { files: {}, subdirs: {} }
-    let names_arr = await fs.readdirSync(thedir)
-    // loop for each name (of a file or a subdir) in the dir
-    for (let i = 0; i < names_arr.length; i++) {
-        let thename = names_arr[i]
-        let thename_with_path = thedir + '/' + thename
-        // get the stat of the current file/dir
-        let thestat = await fs.statSync(thename_with_path)
-        if (thestat.isFile()) {
-            // console.log(29, thename_with_path)
-            result_dict.files[thename_with_path] = {}
-            result_dict.files[thename_with_path].filename = thename
-            result_dict.files[thename_with_path].fullpath = thedir
-            result_dict.files[thename_with_path].size = thestat.size
-            result_dict.files[thename_with_path].mtime = thestat.mtime
-        } else {// if it is a directory
-            result_dict.subdirs[thename_with_path] = {}
-            result_dict.subdirs[thename_with_path].mtime = thestat.mtime
-            let thedir_subdir = thename_with_path
-            let result_subdir_dict = await get_files_subdirs(thedir_subdir)
+    let dirExist = await fs.existsSync(thedir)
+    if (dirExist) {
 
-            // for the fields files and dirs respectively, merg the data in result_subdir_dict into result_subdir
-            result_dict.files = { ...result_dict.files, ...result_subdir_dict.files }
-            result_dict.subdirs = { ...result_dict.subdirs, ...result_subdir_dict.subdirs }
+        let names_arr = await fs.readdirSync(thedir)
+        // loop for each name (of a file or a subdir) in the dir
+        for (let i = 0; i < names_arr.length; i++) {
+            let thename = names_arr[i]
+            let thename_with_path = thedir + '/' + thename
+            // get the stat of the current file/dir
+            let thestat = await fs.statSync(thename_with_path)
+            if (thestat.isFile()) {
+                // console.log(29, thename_with_path)
+                result_dict.files[thename_with_path] = {}
+                result_dict.files[thename_with_path].filename = thename
+                result_dict.files[thename_with_path].fullpath = thedir
+                result_dict.files[thename_with_path].size = thestat.size
+                result_dict.files[thename_with_path].mtime = thestat.mtime
+            } else {// if it is a directory
+                result_dict.subdirs[thename_with_path] = {}
+                result_dict.subdirs[thename_with_path].mtime = thestat.mtime
+                let thedir_subdir = thename_with_path
+                let result_subdir_dict = await get_files_subdirs(thedir_subdir)
 
-        } // if lese (isFile) 
-    } // for (let i = 0; i < names_arr.length; i++)
+                // for the fields files and dirs respectively, merg the data in result_subdir_dict into result_subdir
+                result_dict.files = { ...result_dict.files, ...result_subdir_dict.files }
+                result_dict.subdirs = { ...result_dict.subdirs, ...result_subdir_dict.subdirs }
+            } // if lese (isFile) 
+        } // for (let i = 0; i < names_arr.length; i++)
+    }//if (dirExist)
 
     return result_dict
 };//async function get_files_subdirs
