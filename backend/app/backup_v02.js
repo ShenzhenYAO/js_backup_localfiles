@@ -43,6 +43,8 @@ async function backup_a_src_dir(rootdir_src, rootdir_target) {
 
     // loop for all filese in the src
     let keys_srcfiles = Object.keys(src_dict.files)
+    console.log(46, 'total files from src:', keys_srcfiles.length )
+
     for (let i = 0; i < keys_srcfiles.length; i++) {
         // check whether the file can be found in the target dict
         let thesrcfilename_withpath = keys_srcfiles[i]
