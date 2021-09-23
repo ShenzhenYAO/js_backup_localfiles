@@ -46,11 +46,14 @@ async function backup_a_src_dir(rootdir_src, rootdir_target) {
     console.log(46, 'total number files from src:', keys_srcfiles.length )
 
     for (let i = 0; i < keys_srcfiles.length; i++) {
-        console.log(51, 'copying file ', i, '...')
+        
         // check whether the file can be found in the target dict
         let thesrcfilename_withpath = keys_srcfiles[i]
         // get the stats of the src file
         let stats_srcfile = fs.statSync(thesrcfilename_withpath)
+
+        console.log(55, 'copying file ', i,'of', keys_srcfiles.length)
+        console.log(56, 'filename:', thesrcfilename_withpath, 'size', stats_srcfile.size, '...')
 
         // the src file name with path is like <roodir_src>/subdir/srcfile.ext
         // the corresponding file in the target dir is with the same subdir and file name, but different rootdir
