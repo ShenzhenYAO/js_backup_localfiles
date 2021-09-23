@@ -20,6 +20,7 @@ const beautify = require('beautify');
         backuplog_json.subdirs = { ...backuplog_json.subdirs, ...thetasklog_json.subdirs }
     } //for (let i=0; i < config_json.length; i++)
 
+    console.log (23, 'saving backup log.')
     // write the updated src_dict as the backuplog
     let thetxtjson = JSON.stringify(backuplog_json)
     // console.log(thetxtjson)
@@ -27,6 +28,7 @@ const beautify = require('beautify');
     // do not use the saveJSON function as that one saves a JSON (not jsonstr) to a .json file
     await fs.writeFileSync(backuplogfile, thetxtjson_beautified)
 
+    console.log(31, 'done!')
 })()
 
 
