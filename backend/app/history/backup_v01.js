@@ -14,9 +14,9 @@ const beautify = require('beautify');
     // read the src and target directories from the config file
     let configstr = fs.readFileSync(configfile)
     let config_json = JSON.parse(configstr)
-    for (let i = 0; i < config_json.length; i++) {
+    for (let i = 7; i < config_json.length; i++) {
         let thetask = config_json[i]
-        // console.log(thetask)
+        console.log(thetask)
 
         let thetasklog_json = await backup_a_src_dir(thetask.src, thetask.target)
         backuplog_json.files = { ...backuplog_json.files, ...thetasklog_json.files }
@@ -134,7 +134,6 @@ async function get_files_subdirs(thedir) {
     let result_dict = { files: {}, subdirs: {} }
     let dirExist = await fs.existsSync(thedir)
     if (dirExist) {
-
         let names_arr = await fs.readdirSync(thedir)
         // loop for each name (of a file or a subdir) in the dir
         for (let i = 0; i < names_arr.length; i++) {
