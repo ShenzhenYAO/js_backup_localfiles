@@ -52,8 +52,8 @@ async function backup_a_src_dir(rootdir_src, rootdir_target) {
         // get the stats of the src file
         let stats_srcfile = fs.statSync(thesrcfilename_withpath)
 
-        console.log(55, 'copying file ', i,'of', keys_srcfiles.length)
-        console.log(56, 'filename:', thesrcfilename_withpath, 'size', stats_srcfile.size, '...')
+        console.log(55, 'Copying file ', i,'of', keys_srcfiles.length)
+        console.log(56, 'Filename:', thesrcfilename_withpath, 'size', stats_srcfile.size, '...')
 
         // the src file name with path is like <roodir_src>/subdir/srcfile.ext
         // the corresponding file in the target dir is with the same subdir and file name, but different rootdir
